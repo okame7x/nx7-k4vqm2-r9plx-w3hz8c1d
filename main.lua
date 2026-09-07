@@ -32,9 +32,24 @@ local function destroyMarked(parent)
 	end
 end
 
--- Host: CoreGui normal (como a lib original)
-local GuiHost = game:GetService("CoreGui")
-local GuiHostKind = "CoreGui"
+-- Host: gethui → PlayerGui.
+-- CoreGui via GetService nesse executor estoura "lacking capability Plugin"
+-- e a janela nasce sem conseguir criar/atualizar Instances (opções sumiam).
+local GuiHost = nil
+local GuiHostKind = "none"
+do
+	local okHui, hui = pcall(function()
+		assert(typeof(gethui) == "function")
+		return gethui()
+	end)
+	if okHui and hui then
+		GuiHost = hui
+		GuiHostKind = "gethui"
+	else
+		GuiHost = PlayerGui
+		GuiHostKind = "PlayerGui"
+	end
+end
 getgenv().NousigiGuiHostKind = GuiHostKind
 
 destroyMarked(PlayerGui)
@@ -179,14 +194,20 @@ local function makeDraggable(topBarObject, object)
 		end
 	end)
 	uis.InputChanged:Connect(function(input)
-		if input == dragInput and dragging then
+		if input == dragInput and dragging and dragStart and startPosition and input.Position then
 			local delta = input.Position - dragStart
+			local pos = UDim2.new(
+				startPosition.X.Scale,
+				startPosition.X.Offset + delta.X,
+				startPosition.Y.Scale,
+				startPosition.Y.Offset + delta.Y
+			)
 			if not djtmemay and cac then
 				TweenService:Create(object, TweenInfo.new(DisableAnimation and 0 or 0.35, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
-					Position = UDim2.new(startPosition.X.Scale, startPosition.X.Offset + delta.X, startPosition.Y.Scale, startPosition.Y.Offset + delta.Y)
+					Position = pos,
 				}):Play()
 			elseif not djtmemay and not cac then
-				object.Position = UDim2.new(startPosition.X.Scale, startPosition.X.Offset + delta.X, startPosition.Y.Scale, startPosition.Y.Offset + delta.Y)
+				object.Position = pos
 			end
 		end
 	end)
@@ -273,6 +294,9 @@ if true then
 	
 	-- Function to update the button's position
 	local function update(input)
+		if not input or not input.Position or not dragStart or not startPos then
+			return
+		end
 		local delta = input.Position - dragStart
 		button.Position = UDim2.new(
 			startPos.X.Scale, startPos.X.Offset + delta.X,
@@ -795,8 +819,12 @@ function Library:CreateWindow(Setting)
 	UIPage.Padding = UDim.new(0, 10)
 	UIPage.TweenTime = getgenv().UIColor["Tween Animation 1 Speed"]
 
-	UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-		ControlList.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 5)
+	pcall(function()
+		UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+			pcall(function()
+				ControlList.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y + 5)
+			end)
+		end)
 	end)
 
 	local Shadow = Instance.new("ImageLabel", Main)
@@ -1082,8 +1110,12 @@ function Library:CreateWindow(Setting)
 		Pagelistlayout.Parent = PageList
 		Pagelistlayout.SortOrder = Enum.SortOrder.LayoutOrder
 		Pagelistlayout.Padding = UDim.new(0, 5)
-		Pagelistlayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-			PageList.CanvasSize = UDim2.new(0, 0, 0, Pagelistlayout.AbsoluteContentSize.Y)
+		pcall(function()
+			Pagelistlayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+				pcall(function()
+					PageList.CanvasSize = UDim2.new(0, 0, 0, Pagelistlayout.AbsoluteContentSize.Y)
+				end)
+			end)
 		end)
 
 		local PageSearch = Instance.new("Frame")
@@ -1389,16 +1421,20 @@ function Library:CreateWindow(Setting)
 				SectionGap.Transparency = 1
 			end
 
-			SectionList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-				if (not Toggleable) then
-					Section.Size = UDim2.new(1, -5, 0, SectionList.AbsoluteContentSize.Y + 5)
-				end
-				SizeSectionY = SectionList.AbsoluteContentSize.Y + 5
-				if sectionIsVisible then
-					TweenService:Create(Section, TweenInfo.new(getgenv().UIColor["Tween Animation 1 Speed"]), {
-						Size =  UDim2.new(1, -5, 0, SizeSectionY)
-					}):Play()
-				end
+			pcall(function()
+				SectionList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+					pcall(function()
+						if (not Toggleable) then
+							Section.Size = UDim2.new(1, -5, 0, SectionList.AbsoluteContentSize.Y + 5)
+						end
+						SizeSectionY = SectionList.AbsoluteContentSize.Y + 5
+						if sectionIsVisible then
+							TweenService:Create(Section, TweenInfo.new(getgenv().UIColor["Tween Animation 1 Speed"]), {
+								Size = UDim2.new(1, -5, 0, SizeSectionY),
+							}):Play()
+						end
+					end)
+				end)
 			end)
 			local sectionFunction = {}
 			function sectionFunction:AddToggle(idk,Setting)
