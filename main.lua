@@ -22,7 +22,8 @@ local function destroyMarked(parent)
 	for _, v in ipairs(parent:GetChildren()) do
 		if v:GetAttribute(ATTR) == true
 			or (typeof(v.Name) == "string" and (
-				string.find(v.Name, "Nousigi Hub", 1, true)
+				string.find(v.Name, "Ghost Pipper", 1, true)
+				or string.find(v.Name, "Nousigi Hub", 1, true)
 				or string.find(v.Name, "CHTest_", 1, true)
 			)) then
 			pcall(function()
@@ -32,22 +33,35 @@ local function destroyMarked(parent)
 	end
 end
 
--- Host: gethui → PlayerGui.
--- CoreGui via GetService nesse executor estoura "lacking capability Plugin"
--- e a janela nasce sem conseguir criar/atualizar Instances (opções sumiam).
-local GuiHost = nil
-local GuiHostKind = "none"
+-- Host seguro: PlayerGui primeiro.
+-- gethui/CoreGui no Volt estoura "lacking capability Plugin" ao mutar Instance.
+local GuiHost = PlayerGui
+local GuiHostKind = "PlayerGui"
 do
 	local okHui, hui = pcall(function()
 		assert(typeof(gethui) == "function")
 		return gethui()
 	end)
 	if okHui and hui then
-		GuiHost = hui
-		GuiHostKind = "gethui"
-	else
-		GuiHost = PlayerGui
-		GuiHostKind = "PlayerGui"
+		local isCore = false
+		pcall(function()
+			local core = game:GetService("CoreGui")
+			isCore = hui == core or hui:IsDescendantOf(core)
+		end)
+		if not isCore then
+			local probe = Instance.new("ScreenGui")
+			local okProbe = pcall(function()
+				probe.Parent = hui
+				local f = Instance.new("Frame")
+				f.Parent = probe
+				f.Position = UDim2.fromOffset(1, 1)
+				probe:Destroy()
+			end)
+			if okProbe then
+				GuiHost = hui
+				GuiHostKind = "gethui"
+			end
+		end
 	end
 end
 getgenv().NousigiGuiHostKind = GuiHostKind
@@ -195,6 +209,10 @@ local function makeDraggable(topBarObject, object)
 	end)
 	uis.InputChanged:Connect(function(input)
 		if input == dragInput and dragging and dragStart and startPosition and input.Position then
+			if not object or not object.Parent then
+				dragging = false
+				return
+			end
 			local delta = input.Position - dragStart
 			local pos = UDim2.new(
 				startPosition.X.Scale,
@@ -202,13 +220,15 @@ local function makeDraggable(topBarObject, object)
 				startPosition.Y.Scale,
 				startPosition.Y.Offset + delta.Y
 			)
-			if not djtmemay and cac then
-				TweenService:Create(object, TweenInfo.new(DisableAnimation and 0 or 0.35, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
-					Position = pos,
-				}):Play()
-			elseif not djtmemay and not cac then
-				object.Position = pos
-			end
+			pcall(function()
+				if not djtmemay and cac then
+					TweenService:Create(object, TweenInfo.new(DisableAnimation and 0 or 0.35, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
+						Position = pos,
+					}):Play()
+				elseif not djtmemay and not cac then
+					object.Position = pos
+				end
+			end)
 		end
 	end)
 end
@@ -224,7 +244,7 @@ local function prepScreenGui(gui, name)
 end
 
 -- fixed names for testing (was random)
-Library_Function.Gui = prepScreenGui(Instance.new("ScreenGui"), "CHTest_Main")
+Library_Function.Gui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper")
 Library_Function.Gui.Enabled = false
 
 getgenv().ReadyForGuiLoaded = false
@@ -237,8 +257,8 @@ task.spawn(function()
 	end
 end)
 
-Library_Function.NotiGui = prepScreenGui(Instance.new("ScreenGui"), "CHTest_Noti")
-Library_Function.HideGui = prepScreenGui(Instance.new("ScreenGui"), "CHTest_Btn")
+Library_Function.NotiGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Noti")
+Library_Function.HideGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Btn")
 
 
 local BTN_SIZE = 48
@@ -297,11 +317,16 @@ if true then
 		if not input or not input.Position or not dragStart or not startPos then
 			return
 		end
+		if not button or not button.Parent then
+			return
+		end
 		local delta = input.Position - dragStart
-		button.Position = UDim2.new(
-			startPos.X.Scale, startPos.X.Offset + delta.X,
-			startPos.Y.Scale, startPos.Y.Offset + delta.Y
-		)
+		pcall(function()
+			button.Position = UDim2.new(
+				startPos.X.Scale, startPos.X.Offset + delta.X,
+				startPos.Y.Scale, startPos.Y.Offset + delta.Y
+			)
+		end)
 	end
 	
 	-- Function to detect the start of dragging (for both mouse and touch)
