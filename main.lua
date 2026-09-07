@@ -1123,13 +1123,14 @@ function Library:CreateWindow(Setting)
 		Pagelistlayout.Parent = PageList
 		Pagelistlayout.SortOrder = Enum.SortOrder.LayoutOrder
 		Pagelistlayout.Padding = UDim.new(0, 5)
-		pcall(function()
-			Pagelistlayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-				pcall(function()
-					PageList.CanvasSize = UDim2.new(0, 0, 0, Pagelistlayout.AbsoluteContentSize.Y)
-				end)
-			end)
+		local function refreshPageCanvas()
+			PageList.CanvasSize = UDim2.new(0, 0, 0, Pagelistlayout.AbsoluteContentSize.Y + 8)
+		end
+		Pagelistlayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(refreshPageCanvas)
+		PageList.ChildAdded:Connect(function()
+			task.defer(refreshPageCanvas)
 		end)
+		task.defer(refreshPageCanvas)
 
 		local PageSearch = Instance.new("Frame")
 		local PageSearchCorner = Instance.new("UICorner")
@@ -1286,10 +1287,17 @@ function Library:CreateWindow(Setting)
 			
 			Section.Name = Section_Name .. "_Dot"
 			Section.Parent = PageList
-			Section.Size = UDim2.new(1, -5, 0, 30)
 			Section.BackgroundColor3 = Color3.fromRGB(48, 48, 56)
 			Section.BackgroundTransparency = 0.25
-			Section.ClipsDescendants = true
+			-- Toggleable: collapsible (altura 30). Normal: AutomaticSize pra nao clipar toggles.
+			if Toggleable then
+				Section.Size = UDim2.new(1, -5, 0, 30)
+				Section.ClipsDescendants = true
+			else
+				Section.Size = UDim2.new(1, -5, 0, 0)
+				Section.AutomaticSize = Enum.AutomaticSize.Y
+				Section.ClipsDescendants = false
+			end
 
 			local sectionStroke = Instance.new("UIStroke", Section)
 			sectionStroke.Color = Color3.fromRGB(90, 45, 55)
@@ -1434,21 +1442,23 @@ function Library:CreateWindow(Setting)
 				SectionGap.Transparency = 1
 			end
 
-			pcall(function()
-				SectionList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-					pcall(function()
-						if (not Toggleable) then
-							Section.Size = UDim2.new(1, -5, 0, SectionList.AbsoluteContentSize.Y + 5)
-						end
-						SizeSectionY = SectionList.AbsoluteContentSize.Y + 5
-						if sectionIsVisible then
-							TweenService:Create(Section, TweenInfo.new(getgenv().UIColor["Tween Animation 1 Speed"]), {
-								Size = UDim2.new(1, -5, 0, SizeSectionY),
-							}):Play()
-						end
-					end)
-				end)
-			end)
+			local function refreshSectionSize()
+				local contentY = SectionList.AbsoluteContentSize.Y + 5
+				if contentY < 30 then
+					contentY = 30
+				end
+				SizeSectionY = contentY
+				if Toggleable then
+					if sectionIsVisible then
+						Section.Size = UDim2.new(1, -5, 0, SizeSectionY)
+					end
+				else
+					-- AutomaticSize already expands; keep SizeSectionY for callers
+					Section.Size = UDim2.new(1, -5, 0, 0)
+				end
+			end
+			SectionList:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(refreshSectionSize)
+			task.defer(refreshSectionSize)
 			local sectionFunction = {}
 			function sectionFunction:AddToggle(idk,Setting)
 				local Title = tostring(Setting.Text or Setting.Title) or ""
