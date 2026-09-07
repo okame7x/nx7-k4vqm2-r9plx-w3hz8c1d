@@ -107,15 +107,15 @@ local function applySoftShadow(img, transparency, cornerPx)
 end
 
 local DisableAnimation = PlayerGui:FindFirstChild("TouchGui")
--- palette da logo Ghost Pepper: magenta quente + cyan eletrico, fundo preto, sem verde
-local ACCENT = Color3.fromRGB(255, 20, 180)
-local ACCENT_DEEP = Color3.fromRGB(160, 0, 110)
-local CYAN = Color3.fromRGB(0, 245, 255)
-local BG0 = Color3.fromRGB(0, 0, 0)
-local BG1 = Color3.fromRGB(10, 4, 16)
-local BG2 = Color3.fromRGB(18, 6, 28)
-local BG3 = Color3.fromRGB(28, 8, 40)
-local STROKE = Color3.fromRGB(255, 20, 180)
+-- palette da logo Ghost Pepper: vermelho da pimenta + laranja do fogo
+local ACCENT = Color3.fromRGB(255, 82, 104)
+local ACCENT_DEEP = Color3.fromRGB(184, 24, 45)
+local CYAN = Color3.fromRGB(255, 166, 82)
+local BG0 = Color3.fromRGB(12, 3, 5)
+local BG1 = Color3.fromRGB(29, 7, 11)
+local BG2 = Color3.fromRGB(45, 11, 17)
+local BG3 = Color3.fromRGB(61, 15, 23)
+local STROKE = ACCENT
 
 local T1UIColor = {
 	["Border Color"] = ACCENT,
@@ -126,11 +126,11 @@ local T1UIColor = {
 	["Search Icon Highlight Color"] = ACCENT,
 	["GUI Text Color"] = Color3.fromRGB(250, 245, 255),
 	["Text Color"] = Color3.fromRGB(245, 240, 255),
-	["Placeholder Text Color"] = Color3.fromRGB(120, 100, 150),
+	["Placeholder Text Color"] = Color3.fromRGB(168, 103, 108),
 	["Title Text Color"] = ACCENT,
 	["Background Main Color"] = BG0,
 	["Background 1 Color"] = BG1,
-	["Background 1 Transparency"] = 0,
+	["Background 1 Transparency"] = 0.12,
 	["Background 2 Color"] = BG2,
 	["Background 3 Color"] = BG3,
 	["Background Image"] = "",
@@ -267,7 +267,7 @@ btnHideFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 btnHideFrame.BackgroundTransparency = 0
 
 local btnHideStroke = Instance.new("UIStroke", btnHideFrame)
-btnHideStroke.Color = Color3.fromRGB(255, 20, 180)
+btnHideStroke.Color = ACCENT
 btnHideStroke.Thickness = 1.5
 btnHideStroke.Transparency = 0.15
 
@@ -637,14 +637,15 @@ function Library:CreateWindow(Setting)
 	MainContainer = Instance.new("ImageLabel")
 	MainContainer.Name = "MainContainer"
 	MainContainer.Parent = Main
-	MainContainer.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	MainContainer.BackgroundColor3 = BG0
+	MainContainer.BackgroundTransparency = 0.12
 	MainContainer.Size = UDim2.new(1, 0, 1, 0)
 	MainContainer.Image = ""
 	MainContainer.ClipsDescendants = true
 
 	local uistr = Instance.new("UIStroke", MainContainer);
 	uistr.Thickness = 1.5;
-	uistr.Color = Color3.fromRGB(255, 20, 180);
+	uistr.Color = ACCENT;
 	uistr.Transparency = 0.25
 
 	-- area transparente: glow neon magenta Ã¢â€ â€™ cyan + watermark da logo
@@ -658,15 +659,15 @@ function Library:CreateWindow(Setting)
 
 	local glowGrad = Instance.new("UIGradient")
 	glowGrad.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 20, 180)),
-		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(40, 20, 50)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 245, 255)),
+		ColorSequenceKeypoint.new(0, ACCENT),
+		ColorSequenceKeypoint.new(0.5, BG2),
+		ColorSequenceKeypoint.new(1, CYAN),
 	}
 	glowGrad.Rotation = 125
 	glowGrad.Transparency = NumberSequence.new{
-		NumberSequenceKeypoint.new(0, 0.55),
-		NumberSequenceKeypoint.new(0.45, 0.82),
-		NumberSequenceKeypoint.new(1, 0.6),
+		NumberSequenceKeypoint.new(0, 0.72),
+		NumberSequenceKeypoint.new(0.45, 0.9),
+		NumberSequenceKeypoint.new(1, 0.78),
 	}
 	glowGrad.Parent = glowFill
 
@@ -675,7 +676,7 @@ function Library:CreateWindow(Setting)
 	watermark.BackgroundTransparency = 1
 	watermark.Image = getgenv().UIColor["Logo Image"]
 	watermark.ImageTransparency = 0.78
-	watermark.ImageColor3 = Color3.fromRGB(255, 20, 180)
+	watermark.ImageColor3 = ACCENT
 	watermark.ScaleType = Enum.ScaleType.Fit
 	watermark.AnchorPoint = Vector2.new(1, 1)
 	watermark.Position = UDim2.new(1, -12, 1, -8)
@@ -685,12 +686,12 @@ function Library:CreateWindow(Setting)
 
 	local uigradient = Instance.new("UIGradient", MainContainer);
 	uigradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 20, 180)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 245, 255))
+		ColorSequenceKeypoint.new(0, ACCENT),
+		ColorSequenceKeypoint.new(1, CYAN)
 	}
 	uigradient.Rotation = 90
 	uigradient.Transparency = NumberSequence.new{
-		NumberSequenceKeypoint.new(0, 0.94),
+		NumberSequenceKeypoint.new(0, 0.9),
 		NumberSequenceKeypoint.new(1, 0.94)
 	}
 
@@ -730,8 +731,8 @@ function Library:CreateWindow(Setting)
 	
 	local TopStroke = Instance.new("Frame", TopMain)
 	TopStroke.Name = "TopStroke"
-	TopStroke.BackgroundColor3 = Color3.fromRGB(255, 20, 180)
-	TopStroke.BackgroundTransparency = 0.6
+	TopStroke.BackgroundColor3 = ACCENT
+	TopStroke.BackgroundTransparency = 0.35
 	TopStroke.BorderSizePixel = 0
 	TopStroke.Position = UDim2.new(0, 0, 1, -1)
 	TopStroke.Size = UDim2.new(1, 0, 0, 1)
@@ -767,17 +768,17 @@ function Library:CreateWindow(Setting)
 	PageControl.Parent = Concacmain
 	PageControl.Position = UDim2.new(0, 5, 0, 0)
 	PageControl.Size = UDim2.new(0, 180, 0, 325)
-	PageControl.BackgroundColor3 = Color3.fromRGB(10, 4, 16)
-	PageControl.BackgroundTransparency = 0.1
+	PageControl.BackgroundColor3 = BG1
+	PageControl.BackgroundTransparency = 0.12
 
 	local pageControlStroke = Instance.new("UIStroke", PageControl)
-	pageControlStroke.Color = Color3.fromRGB(255, 20, 180)
+	pageControlStroke.Color = ACCENT
 	pageControlStroke.Thickness = 1
 
 	local pageControlGradient = Instance.new("UIGradient", PageControl)
 	pageControlGradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 4, 16)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(18, 6, 28))
+		ColorSequenceKeypoint.new(0, BG1),
+		ColorSequenceKeypoint.new(1, BG2)
 	}
 	pageControlGradient.Rotation = 90
 	pageControlGradient.Transparency = NumberSequence.new{
@@ -827,7 +828,7 @@ function Library:CreateWindow(Setting)
 	PageSearch.Name = "PageSearch"
 	PageSearch.Parent = PageControl
 	PageSearch.AnchorPoint = Vector2.new(1, 0)
-	PageSearch.BackgroundColor3 = Color3.fromRGB(18, 6, 28)
+	PageSearch.BackgroundColor3 = BG2
 	PageSearch.Position = UDim2.new(1, -5, 0, 5)
 	PageSearch.Size = UDim2.new(0, 170, 0, 25)
 	PageSearch.ClipsDescendants = true
@@ -1339,8 +1340,8 @@ function Library:CreateWindow(Setting)
 			
 			Section.Name = Section_Name .. "_Dot"
 			Section.Parent = PageList
-			Section.BackgroundColor3 = Color3.fromRGB(28, 8, 40)
-			Section.BackgroundTransparency = 0.25
+			Section.BackgroundColor3 = BG3
+			Section.BackgroundTransparency = 0.18
 			-- Toggleable: collapsible (altura 30). Normal: AutomaticSize pra nao clipar toggles.
 			if Toggleable then
 				Section.Size = UDim2.new(1, -5, 0, 30)
@@ -1352,13 +1353,13 @@ function Library:CreateWindow(Setting)
 			end
 
 			local sectionStroke = Instance.new("UIStroke", Section)
-			sectionStroke.Color = Color3.fromRGB(255, 20, 180)
+			sectionStroke.Color = ACCENT
 			sectionStroke.Thickness = 1
 
 			local sectionGradient = Instance.new("UIGradient", Section)
 			sectionGradient.Color = ColorSequence.new{
-				ColorSequenceKeypoint.new(0, Color3.fromRGB(18, 6, 28)),
-				ColorSequenceKeypoint.new(1, Color3.fromRGB(28, 8, 40))
+				ColorSequenceKeypoint.new(0, BG2),
+				ColorSequenceKeypoint.new(1, BG3)
 			}
 			sectionGradient.Rotation = 90
 			sectionGradient.Transparency = NumberSequence.new{
@@ -1557,7 +1558,7 @@ function Library:CreateWindow(Setting)
 				check.Name = "check"
 				check.Parent = checkbox
 				check.AnchorPoint = Vector2.new(0.5, 0.5)
-				check.BackgroundColor3 = Color3.fromRGB(255, 20, 180)
+				check.BackgroundColor3 = ACCENT
 				check.Position = UDim2.new(0.5, 0, 0.5, 0)
 				local cac = 5
 				if Desc then
@@ -1719,7 +1720,7 @@ function Library:CreateWindow(Setting)
              ClickArea_1.Name = "ClickArea"
              ClickArea_1.Parent = RowBG_1
              ClickArea_1.AnchorPoint = Vector2.new(1, 0.5)
-             ClickArea_1.BackgroundColor3 = Color3.fromRGB(255, 20, 180)
+             ClickArea_1.BackgroundColor3 = ACCENT
              ClickArea_1.Position = UDim2.new(1, -8,0.5, 0)
              ClickArea_1.Size = UDim2.new(0, 94,0, 30)
              ClickArea_1.ClipsDescendants = true  -- THÃƒÆ’Ã…Â M DÃƒÆ’Ã¢â‚¬â„¢NG NÃƒÆ’Ã¢â€šÂ¬Y: NgÃƒâ€žÃ†â€™n ripple trÃƒÆ’Ã‚Â n ra
@@ -1729,10 +1730,10 @@ function Library:CreateWindow(Setting)
              
              UIGradient_1.Parent = ClickArea_1
              UIGradient_1.Color = ColorSequence.new{
-                 ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 245, 255)), 
-                 ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255, 20, 180)), 
-                 ColorSequenceKeypoint.new(0.6, Color3.fromRGB(190, 25, 130)), 
-                 ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 20, 90))
+                 ColorSequenceKeypoint.new(0, CYAN), 
+                 ColorSequenceKeypoint.new(0.4, ACCENT), 
+                 ColorSequenceKeypoint.new(0.6, ACCENT_DEEP), 
+                 ColorSequenceKeypoint.new(1, BG3)
              }
              UIGradient_1.Rotation = 90
              
@@ -2117,7 +2118,7 @@ function Library:CreateWindow(Setting)
                     SliderBG.AnchorPoint = Vector2.new(0.5, 0.5)
                     SliderBG.Position = UDim2.new(0.5, 0, 0.5, 0)
                     SliderBG.Size = UDim2.new(1, -5, 1, 0)  -- ChiÃƒÂ¡Ã‚ÂºÃ‚Â¿m gÃƒÂ¡Ã‚ÂºÃ‚Â§n toÃƒÆ’Ã‚Â n bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ (trÃƒÂ¡Ã‚Â»Ã‚Â« 5 pixel)
-                    SliderBG.BackgroundColor3 = Color3.fromRGB(10, 4, 16)
+                    SliderBG.BackgroundColor3 = BG1
                     SliderBG.BackgroundTransparency = 0.25
                     
                     SliderBGCorner.CornerRadius = UDim.new(0, 4)
