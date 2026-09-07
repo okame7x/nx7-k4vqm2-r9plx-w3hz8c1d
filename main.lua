@@ -211,18 +211,17 @@ local function makeDraggable(topBarObject, object)
 	end)
 end
 
-local function prepScreenGui(gui, name)
+local function prepScreenGui(gui, name, order)
 	gui.Name = name or randName()
 	gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
+	gui.DisplayOrder = order or 2147483646
 	gui:SetAttribute(ATTR, true)
-	-- no protect_gui — executor fingerprint
 	return gui
 end
 
--- fixed names for testing (was random)
-Library_Function.Gui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper")
+Library_Function.Gui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper", 2147483645)
 Library_Function.Gui.Enabled = false
 
 getgenv().ReadyForGuiLoaded = false
@@ -235,8 +234,8 @@ task.spawn(function()
 	end
 end)
 
-Library_Function.NotiGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Noti")
-Library_Function.HideGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Btn")
+Library_Function.NotiGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Noti", 2147483646)
+Library_Function.HideGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Btn", 2147483647)
 
 
 local BTN_SIZE = 48
