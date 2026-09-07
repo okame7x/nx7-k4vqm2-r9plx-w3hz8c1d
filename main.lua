@@ -376,9 +376,22 @@ NotiList.VerticalAlignment = Enum.VerticalAlignment.Bottom
 NotiList.Padding = UDim.new(0, 5)
 
 
-Library_Function.Gui.Parent = GuiHost
-Library_Function.NotiGui.Parent = GuiHost
-Library_Function.HideGui.Parent = GuiHost
+do
+	local function parentGui(gui)
+		local ok = pcall(function()
+			gui.Parent = GuiHost
+		end)
+		if not ok or gui.Parent ~= GuiHost then
+			gui.Parent = PlayerGui
+			GuiHost = PlayerGui
+			GuiHostKind = "PlayerGui"
+			getgenv().NousigiGuiHostKind = GuiHostKind
+		end
+	end
+	parentGui(Library_Function.Gui)
+	parentGui(Library_Function.NotiGui)
+	parentGui(Library_Function.HideGui)
+end
 
 function Library_Function.Getcolor(color)
 	return {
