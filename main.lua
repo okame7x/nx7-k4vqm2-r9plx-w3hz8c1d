@@ -33,41 +33,13 @@ local function destroyMarked(parent)
 	end
 end
 
--- Host seguro: PlayerGui primeiro.
--- gethui/CoreGui no Volt estoura "lacking capability Plugin" ao mutar Instance.
+-- Volt: gethui/CoreGui estoura "lacking capability Plugin" ao ler/mutar Instance.
+-- Host fixo em PlayerGui.
 local GuiHost = PlayerGui
 local GuiHostKind = "PlayerGui"
-do
-	local okHui, hui = pcall(function()
-		assert(typeof(gethui) == "function")
-		return gethui()
-	end)
-	if okHui and hui then
-		local isCore = false
-		pcall(function()
-			local core = game:GetService("CoreGui")
-			isCore = hui == core or hui:IsDescendantOf(core)
-		end)
-		if not isCore then
-			local probe = Instance.new("ScreenGui")
-			local okProbe = pcall(function()
-				probe.Parent = hui
-				local f = Instance.new("Frame")
-				f.Parent = probe
-				f.Position = UDim2.fromOffset(1, 1)
-				probe:Destroy()
-			end)
-			if okProbe then
-				GuiHost = hui
-				GuiHostKind = "gethui"
-			end
-		end
-	end
-end
 getgenv().NousigiGuiHostKind = GuiHostKind
 
 destroyMarked(PlayerGui)
-destroyMarked(GuiHost)
 
 getgenv().Nousigi = true
 
@@ -194,7 +166,10 @@ local function makeDraggable(topBarObject, object)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 			dragging = true
 			dragStart = input.Position
-			startPosition = object.Position
+			local okPos, curPos = pcall(function()
+				return object.Position
+			end)
+			startPosition = okPos and curPos or nil
 			input.Changed:Connect(function()
 				if input.UserInputState == Enum.UserInputState.End then
 					dragging = false
@@ -209,10 +184,6 @@ local function makeDraggable(topBarObject, object)
 	end)
 	uis.InputChanged:Connect(function(input)
 		if input == dragInput and dragging and dragStart and startPosition and input.Position then
-			if not object or not object.Parent then
-				dragging = false
-				return
-			end
 			local delta = input.Position - dragStart
 			local pos = UDim2.new(
 				startPosition.X.Scale,
@@ -220,7 +191,11 @@ local function makeDraggable(topBarObject, object)
 				startPosition.Y.Scale,
 				startPosition.Y.Offset + delta.Y
 			)
-			pcall(function()
+			local ok = pcall(function()
+				if not object or object.Parent == nil then
+					dragging = false
+					return
+				end
 				if not djtmemay and cac then
 					TweenService:Create(object, TweenInfo.new(DisableAnimation and 0 or 0.35, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
 						Position = pos,
@@ -229,6 +204,9 @@ local function makeDraggable(topBarObject, object)
 					object.Position = pos
 				end
 			end)
+			if not ok then
+				dragging = false
+			end
 		end
 	end)
 end
@@ -312,16 +290,15 @@ if true then
 	local holdTime = 0.1 -- Time to hold before dragging is enabled
 	local holdStarted = 0
 	
-	-- Function to update the button's position
 	local function update(input)
 		if not input or not input.Position or not dragStart or not startPos then
 			return
 		end
-		if not button or not button.Parent then
-			return
-		end
 		local delta = input.Position - dragStart
 		pcall(function()
+			if not button or button.Parent == nil then
+				return
+			end
 			button.Position = UDim2.new(
 				startPos.X.Scale, startPos.X.Offset + delta.X,
 				startPos.Y.Scale, startPos.Y.Offset + delta.Y
@@ -329,18 +306,19 @@ if true then
 		end)
 	end
 	
-	-- Function to detect the start of dragging (for both mouse and touch)
 	local function onInputBegan(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			holdStarted = tick() -- Record the time when holding starts
+			holdStarted = tick()
 			dragStart = input.Position
-			startPos = button.Position
-	
-			-- Listen for release to stop dragging
+			local okPos, curPos = pcall(function()
+				return button.Position
+			end)
+			startPos = okPos and curPos or nil
+
 			input.Changed:Connect(function()
 				if input.UserInputState == Enum.UserInputState.End then
 					dragging = false
-					holdStarted = 0 -- Reset the hold timer
+					holdStarted = 0
 				end
 			end)
 		end
@@ -403,15 +381,12 @@ NotiList.Padding = UDim.new(0, 5)
 
 do
 	local function parentGui(gui)
-		local ok = pcall(function()
-			gui.Parent = GuiHost
-		end)
-		if not ok or gui.Parent ~= GuiHost then
+		pcall(function()
 			gui.Parent = PlayerGui
-			GuiHost = PlayerGui
-			GuiHostKind = "PlayerGui"
-			getgenv().NousigiGuiHostKind = GuiHostKind
-		end
+		end)
+		GuiHost = PlayerGui
+		GuiHostKind = "PlayerGui"
+		getgenv().NousigiGuiHostKind = GuiHostKind
 	end
 	parentGui(Library_Function.Gui)
 	parentGui(Library_Function.NotiGui)
