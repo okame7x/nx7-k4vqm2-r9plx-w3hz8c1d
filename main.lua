@@ -122,7 +122,7 @@ local T1UIColor = {
 	["Background 1 Transparency"] = 0.1,
 	["Background 2 Color"] = Color3.fromRGB(38, 38, 46),
 	["Background 3 Color"] = Color3.fromRGB(48, 48, 56),
-	["Background Image"] = "https://cdn.discordapp.com/attachments/1540153283501621302/1546150812676522047/124_Anh_Anime_Nu_Cute_ang_Yeu_4K_Kawaii_Girl.jpg?ex=6a9f6567&is=6a9e13e7&hm=f07e7deed2e1e7a4e170420cb7f5e1dee302e80d46e02d329d31db0dee668ccf&",
+	["Background Image"] = "",
 	["Page Selected Color"] = Color3.fromRGB(255, 64, 96),
 	["Section Text Color"] = Color3.fromRGB(220, 220, 210),
 	["Section Underline Color"] = Color3.fromRGB(255, 64, 96),
@@ -588,18 +588,7 @@ function Library:CreateWindow(Setting)
 	MainContainer.Parent = Main
 	MainContainer.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
 	MainContainer.Size = UDim2.new(1, 0, 1, 0)
-	MainContainer.ScaleType = Enum.ScaleType.Crop
-	MainContainer.Image = loadHttpImage(getgenv().UIColor["Background Image"], "ch_ui_bg.jpg")
-
-	-- dark veil so tabs/text stay readable over the photo
-	local bgVeil = Instance.new("Frame")
-	bgVeil.Name = "BgVeil"
-	bgVeil.Parent = MainContainer
-	bgVeil.BackgroundColor3 = Color3.fromRGB(8, 8, 12)
-	bgVeil.BackgroundTransparency = 0.35
-	bgVeil.BorderSizePixel = 0
-	bgVeil.Size = UDim2.new(1, 0, 1, 0)
-	bgVeil.ZIndex = 0
+	MainContainer.Image = ""
 
 	local uistr = Instance.new("UIStroke", MainContainer);
 	uistr.Thickness = 1;
