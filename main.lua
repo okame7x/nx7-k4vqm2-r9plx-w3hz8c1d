@@ -3634,20 +3634,5 @@ end
 end
 
 getgenv().NousigiLibrary = Library
-
--- Shadow uses applySoftShadow (no 5028857084)
-
-local okWin, winOrErr = pcall(function()
-	-- shell vazia — tabs/opções entram depois via load
-	local Window = Library:CreateWindow({
-		Title = "Ghost Pipper Hub",
-		Desc = "",
-	})
-	return Window
-end)
-
-if not okWin then
-	warn("[ui.lua] CreateWindow falhou: ", winOrErr)
-end
-
+-- Sem auto-window: quem carrega (script.lua) chama CreateWindow e monta as tabs.
 return Library
