@@ -43,7 +43,7 @@ destroyMarked(PlayerGui)
 
 getgenv().Nousigi = true
 
--- Discord/http image → getcustomasset (Roblox Image can't load raw https)
+-- Discord/http image Ã¢â€ â€™ getcustomasset (Roblox Image can't load raw https)
 local function loadHttpImage(url, cacheName)
 	if typeof(url) ~= "string" or url == "" then
 		return ""
@@ -107,38 +107,48 @@ local function applySoftShadow(img, transparency, cornerPx)
 end
 
 local DisableAnimation = PlayerGui:FindFirstChild("TouchGui")
+-- palette da logo Ghost Pepper: magenta neon + cyan, sem verde
+local ACCENT = Color3.fromRGB(255, 45, 170)
+local ACCENT_DEEP = Color3.fromRGB(190, 25, 130)
+local CYAN = Color3.fromRGB(40, 220, 255)
+local BG0 = Color3.fromRGB(8, 4, 12)
+local BG1 = Color3.fromRGB(16, 8, 22)
+local BG2 = Color3.fromRGB(24, 12, 34)
+local BG3 = Color3.fromRGB(34, 16, 48)
+local STROKE = Color3.fromRGB(120, 40, 110)
+
 local T1UIColor = {
-	["Border Color"] = Color3.fromRGB(255, 64, 96),
-	["Click Effect Color"] = Color3.fromRGB(230, 230, 230),
-	["Setting Icon Color"] = Color3.fromRGB(230, 230, 230),
+	["Border Color"] = ACCENT,
+	["Click Effect Color"] = Color3.fromRGB(240, 235, 250),
+	["Setting Icon Color"] = Color3.fromRGB(230, 225, 245),
 	["Logo Image"] = "rbxassetid://139877446989431",
-	["Search Icon Color"] = Color3.fromRGB(240, 240, 230),
-	["Search Icon Highlight Color"] = Color3.fromRGB(255, 64, 96),
-	["GUI Text Color"] = Color3.fromRGB(235, 235, 230),
-	["Text Color"] = Color3.fromRGB(235, 235, 230),
-	["Placeholder Text Color"] = Color3.fromRGB(170, 170, 160),
-	["Title Text Color"] = Color3.fromRGB(255, 64, 96),
-	["Background Main Color"] = Color3.fromRGB(18, 18, 22),
-	["Background 1 Color"] = Color3.fromRGB(28, 28, 34),
-	["Background 1 Transparency"] = 0.1,
-	["Background 2 Color"] = Color3.fromRGB(38, 38, 46),
-	["Background 3 Color"] = Color3.fromRGB(48, 48, 56),
+	["Search Icon Color"] = Color3.fromRGB(210, 230, 245),
+	["Search Icon Highlight Color"] = CYAN,
+	["GUI Text Color"] = Color3.fromRGB(240, 235, 250),
+	["Text Color"] = Color3.fromRGB(235, 230, 245),
+	["Placeholder Text Color"] = Color3.fromRGB(140, 130, 160),
+	["Title Text Color"] = ACCENT,
+	["Background Main Color"] = BG0,
+	["Background 1 Color"] = BG1,
+	["Background 1 Transparency"] = 0.05,
+	["Background 2 Color"] = BG2,
+	["Background 3 Color"] = BG3,
 	["Background Image"] = "",
-	["Page Selected Color"] = Color3.fromRGB(255, 64, 96),
-	["Section Text Color"] = Color3.fromRGB(220, 220, 210),
-	["Section Underline Color"] = Color3.fromRGB(255, 64, 96),
-	["Toggle Border Color"] = Color3.fromRGB(255, 64, 96),
-	["Toggle Checked Color"] = Color3.fromRGB(230, 230, 230),
-	["Toggle Desc Color"] = Color3.fromRGB(185, 185, 185),
-	["Button Color"] = Color3.fromRGB(255, 64, 96),
-	["Label Color"] = Color3.fromRGB(38, 38, 42),
-	["Dropdown Icon Color"] = Color3.fromRGB(230, 230, 230),
-	["Dropdown Selected Color"] = Color3.fromRGB(255, 64, 96),
-	["Dropdown Selected Check Color"] = Color3.fromRGB(200, 45, 70),
-	["Textbox Highlight Color"] = Color3.fromRGB(255, 64, 96),
-	["Box Highlight Color"] = Color3.fromRGB(255, 64, 96),
-	["Slider Line Color"] = Color3.fromRGB(255, 64, 96),
-	["Slider Highlight Color"] = Color3.fromRGB(200, 45, 70),
+	["Page Selected Color"] = ACCENT,
+	["Section Text Color"] = Color3.fromRGB(230, 220, 245),
+	["Section Underline Color"] = CYAN,
+	["Toggle Border Color"] = ACCENT,
+	["Toggle Checked Color"] = Color3.fromRGB(240, 235, 250),
+	["Toggle Desc Color"] = Color3.fromRGB(170, 160, 190),
+	["Button Color"] = ACCENT,
+	["Label Color"] = BG2,
+	["Dropdown Icon Color"] = Color3.fromRGB(230, 225, 245),
+	["Dropdown Selected Color"] = ACCENT,
+	["Dropdown Selected Check Color"] = ACCENT_DEEP,
+	["Textbox Highlight Color"] = CYAN,
+	["Box Highlight Color"] = ACCENT,
+	["Slider Line Color"] = ACCENT,
+	["Slider Highlight Color"] = CYAN,
 	["Tween Animation 1 Speed"] = DisableAnimation and 0 or 0.25,
 	["Tween Animation 2 Speed"] = DisableAnimation and 0 or 0.5,
 	["Tween Animation 3 Speed"] = DisableAnimation and 0 or 0.1,
@@ -253,8 +263,13 @@ btnHideFrame.AnchorPoint = Vector2.new(0, 1)
 btnHideFrame.Size = UDim2.new(0, BTN_SIZE, 0, BTN_SIZE)
 btnHideFrame.Position = UDim2.new(0, 0, 1, 0)
 btnHideFrame.Name = "dut dit"
-btnHideFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+btnHideFrame.BackgroundColor3 = Color3.fromRGB(8, 4, 12)
 btnHideFrame.BackgroundTransparency = 0
+
+local btnHideStroke = Instance.new("UIStroke", btnHideFrame)
+btnHideStroke.Color = Color3.fromRGB(255, 45, 170)
+btnHideStroke.Thickness = 1.5
+btnHideStroke.Transparency = 0.15
 
 local imgHide = Instance.new('ImageLabel', btnHide)
 imgHide.AnchorPoint = Vector2.new(.5, .5)
@@ -269,7 +284,7 @@ UICornerBtnHide.CornerRadius = UDim.new(1, 0)
 
 Library.ToggleUI = function()
 	getgenv().UIToggled = not getgenv().UIToggled
-	-- size stays the "open" look always — no shrink when closed
+	-- size stays the "open" look always Ã¢â‚¬â€ no shrink when closed
 	if Library_Function.Gui then
 		Library_Function.Gui.Enabled = getgenv().UIToggled
 	end
@@ -279,6 +294,16 @@ Library.DestroyUI = function()
 	destroyMarked(GuiHost)
 	destroyMarked(PlayerGui)
 end
+
+-- atalho: Ctrl abre/fecha a UI
+uis.InputBegan:Connect(function(input, gameProcessed)
+	if gameProcessed then
+		return
+	end
+	if input.KeyCode == Enum.KeyCode.LeftControl or input.KeyCode == Enum.KeyCode.RightControl then
+		Library.ToggleUI()
+	end
+end)
 
 if true then
 	local button = btnHide -- Assuming this is a TextButton or ImageButton
@@ -458,7 +483,7 @@ local libCreateNoti = function(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-    TextLabelNoti.Text = "<font color=\"rgb(" .. tostring(color or "255,64,96") .. ")\">" .. tostring("Ghost Pipper Hub") .. "</font> " .. tostring(getgenv().TitleNameNoti or "")
+    TextLabelNoti.Text = "<font color=\"rgb(" .. tostring(color or "255,45,170") .. ")\">" .. tostring("Ghost Pipper Hub") .. "</font> " .. tostring(getgenv().TitleNameNoti or "")
     
 	TextLabelNoti.Name = "TextLabelNoti"
 	TextLabelNoti.Parent = Topnoti
@@ -622,23 +647,61 @@ function Library:CreateWindow(Setting)
 	MainContainer = Instance.new("ImageLabel")
 	MainContainer.Name = "MainContainer"
 	MainContainer.Parent = Main
-	MainContainer.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+	MainContainer.BackgroundColor3 = Color3.fromRGB(8, 4, 12)
 	MainContainer.Size = UDim2.new(1, 0, 1, 0)
 	MainContainer.Image = ""
+	MainContainer.ClipsDescendants = true
 
 	local uistr = Instance.new("UIStroke", MainContainer);
-	uistr.Thickness = 1;
-	uistr.Color = Color3.fromRGB(90, 45, 55);
+	uistr.Thickness = 1.5;
+	uistr.Color = Color3.fromRGB(255, 45, 170);
+	uistr.Transparency = 0.25
+
+	-- area transparente: glow neon magenta â†’ cyan + watermark da logo
+	local glowFill = Instance.new("Frame")
+	glowFill.Name = "NeonGlow"
+	glowFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	glowFill.BorderSizePixel = 0
+	glowFill.Size = UDim2.new(1, 0, 1, 0)
+	glowFill.ZIndex = 0
+	glowFill.Parent = MainContainer
+
+	local glowGrad = Instance.new("UIGradient")
+	glowGrad.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 45, 170)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(40, 20, 50)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(40, 220, 255)),
+	}
+	glowGrad.Rotation = 125
+	glowGrad.Transparency = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 0.78),
+		NumberSequenceKeypoint.new(0.45, 0.92),
+		NumberSequenceKeypoint.new(1, 0.82),
+	}
+	glowGrad.Parent = glowFill
+
+	local watermark = Instance.new("ImageLabel")
+	watermark.Name = "LogoWatermark"
+	watermark.BackgroundTransparency = 1
+	watermark.Image = getgenv().UIColor["Logo Image"]
+	watermark.ImageTransparency = 0.88
+	watermark.ImageColor3 = Color3.fromRGB(255, 45, 170)
+	watermark.ScaleType = Enum.ScaleType.Fit
+	watermark.AnchorPoint = Vector2.new(1, 1)
+	watermark.Position = UDim2.new(1, -12, 1, -8)
+	watermark.Size = UDim2.new(0, 140, 0, 140)
+	watermark.ZIndex = 0
+	watermark.Parent = MainContainer
 
 	local uigradient = Instance.new("UIGradient", MainContainer);
 	uigradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(200, 200, 200))
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 45, 170)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(40, 220, 255))
 	}
 	uigradient.Rotation = 90
 	uigradient.Transparency = NumberSequence.new{
-		NumberSequenceKeypoint.new(0, 0.92),
-		NumberSequenceKeypoint.new(1, 0.92)
+		NumberSequenceKeypoint.new(0, 0.94),
+		NumberSequenceKeypoint.new(1, 0.94)
 	}
 
 	getgenv().ReadyForGuiLoaded = true
@@ -677,7 +740,7 @@ function Library:CreateWindow(Setting)
 	
 	local TopStroke = Instance.new("Frame", TopMain)
 	TopStroke.Name = "TopStroke"
-	TopStroke.BackgroundColor3 = Color3.fromRGB(90, 45, 55)
+	TopStroke.BackgroundColor3 = Color3.fromRGB(120, 40, 110)
 	TopStroke.BackgroundTransparency = 0.6
 	TopStroke.BorderSizePixel = 0
 	TopStroke.Position = UDim2.new(0, 0, 1, -1)
@@ -708,23 +771,23 @@ function Library:CreateWindow(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-    TextLabelMain.Text = "<font color=\"rgb(" .. tostring(color or "255,64,96") .. ")\">" .. tostring(TitleNameMain or "Ghost Pipper Hub") .. "</font> " .. tostring(getgenv().MainDesc or "")
+    TextLabelMain.Text = "<font color=\"rgb(" .. tostring(color or "255,45,170") .. ")\">" .. tostring(TitleNameMain or "Ghost Pipper Hub") .. "</font> " .. tostring(getgenv().MainDesc or "")
 
 	PageControl.Name = "Background1"
 	PageControl.Parent = Concacmain
 	PageControl.Position = UDim2.new(0, 5, 0, 0)
 	PageControl.Size = UDim2.new(0, 180, 0, 325)
-	PageControl.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+	PageControl.BackgroundColor3 = Color3.fromRGB(16, 8, 22)
 	PageControl.BackgroundTransparency = 0.1
 
 	local pageControlStroke = Instance.new("UIStroke", PageControl)
-	pageControlStroke.Color = Color3.fromRGB(90, 45, 55)
+	pageControlStroke.Color = Color3.fromRGB(120, 40, 110)
 	pageControlStroke.Thickness = 1
 
 	local pageControlGradient = Instance.new("UIGradient", PageControl)
 	pageControlGradient.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(28, 28, 34)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(38, 38, 46))
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(16, 8, 22)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(24, 12, 34))
 	}
 	pageControlGradient.Rotation = 90
 	pageControlGradient.Transparency = NumberSequence.new{
@@ -774,7 +837,7 @@ function Library:CreateWindow(Setting)
 	PageSearch.Name = "PageSearch"
 	PageSearch.Parent = PageControl
 	PageSearch.AnchorPoint = Vector2.new(1, 0)
-	PageSearch.BackgroundColor3 = Color3.fromRGB(38, 38, 46)
+	PageSearch.BackgroundColor3 = Color3.fromRGB(24, 12, 34)
 	PageSearch.Position = UDim2.new(1, -5, 0, 5)
 	PageSearch.Size = UDim2.new(0, 170, 0, 25)
 	PageSearch.ClipsDescendants = true
@@ -847,22 +910,22 @@ function Library:CreateWindow(Setting)
 	Shadow.ZIndex = 0
 	applySoftShadow(Shadow, 0.55, 14)
 
-    -- Thêm biến để lưu thông tin section
+    -- ThÃƒÂªm biÃ¡ÂºÂ¿n Ã„â€˜Ã¡Â»Æ’ lÃ†Â°u thÃƒÂ´ng tin section
     local sectionInfo = {}
     
-    -- Tạo hàm GlobalSearch nếu chưa tồn tại
+    -- TÃ¡ÂºÂ¡o hÃƒÂ m GlobalSearch nÃ¡ÂºÂ¿u chÃ†Â°a tÃ¡Â»â€œn tÃ¡ÂºÂ¡i
     if not GlobalSearch then
         GlobalSearch = function(searchText)
             searchText = string.lower(searchText)
             
             if searchText == "" then
-                -- Hiển thị tất cả như cũ
+                -- HiÃ¡Â»Æ’n thÃ¡Â»â€¹ tÃ¡ÂºÂ¥t cÃ¡ÂºÂ£ nhÃ†Â° cÃ…Â©
                 for _, control in pairs(getgenv().AllControls) do
                     control.TabButton.Visible = true
                     control.Section.Visible = true
                     control.Element.Visible = true
                 end
-                -- Hiển thị tất cả tab
+                -- HiÃ¡Â»Æ’n thÃ¡Â»â€¹ tÃ¡ÂºÂ¥t cÃ¡ÂºÂ£ tab
                 for _, tab in pairs(ControlList:GetChildren()) do
                     if not tab:IsA('UIListLayout') then
                         tab.Visible = true
@@ -871,34 +934,34 @@ function Library:CreateWindow(Setting)
                 return
             end
             
-            -- Ẩn tất cả trước
+            -- Ã¡ÂºÂ¨n tÃ¡ÂºÂ¥t cÃ¡ÂºÂ£ trÃ†Â°Ã¡Â»â€ºc
             for _, control in pairs(getgenv().AllControls) do
                 control.Section.Visible = false
                 control.Element.Visible = false
             end
             
-            -- Ẩn tất cả tab
+            -- Ã¡ÂºÂ¨n tÃ¡ÂºÂ¥t cÃ¡ÂºÂ£ tab
             for _, tab in pairs(ControlList:GetChildren()) do
                 if not tab:IsA('UIListLayout') then
                     tab.Visible = false
                 end
             end
             
-            -- Tạo bản đồ section
+            -- TÃ¡ÂºÂ¡o bÃ¡ÂºÂ£n Ã„â€˜Ã¡Â»â€œ section
             local sectionsWithElements = {}
             local elementsInSection = {}
             
-            -- Phân tích từng control
+            -- PhÃƒÂ¢n tÃƒÂ­ch tÃ¡Â»Â«ng control
             for _, control in pairs(getgenv().AllControls) do
                 local elementName = string.lower(control.Name or "")
                 local sectionName = string.lower(control.SectionName or "")
                 
-                -- Kiểm tra phần tử (sử dụng string.find thay vì string.match)
+                -- KiÃ¡Â»Æ’m tra phÃ¡ÂºÂ§n tÃ¡Â»Â­ (sÃ¡Â»Â­ dÃ¡Â»Â¥ng string.find thay vÃƒÂ¬ string.match)
                 local elementFound = string.find(elementName, searchText, 1, true) ~= nil
-                -- Kiểm tra section
+                -- KiÃ¡Â»Æ’m tra section
                 local sectionFound = string.find(sectionName, searchText, 1, true) ~= nil
                 
-                -- Tạo bản đồ section
+                -- TÃ¡ÂºÂ¡o bÃ¡ÂºÂ£n Ã„â€˜Ã¡Â»â€œ section
                 if not elementsInSection[control.Section] then
                     elementsInSection[control.Section] = {}
                 end
@@ -908,20 +971,20 @@ function Library:CreateWindow(Setting)
                     sectionFound = sectionFound
                 })
                 
-                -- Đánh dấu section có phần tử khớp
+                -- Ã„ÂÃƒÂ¡nh dÃ¡ÂºÂ¥u section cÃƒÂ³ phÃ¡ÂºÂ§n tÃ¡Â»Â­ khÃ¡Â»â€ºp
                 if elementFound then
                     sectionsWithElements[control.Section] = true
                 end
             end
             
-            -- Xử lý hiển thị
+            -- XÃ¡Â»Â­ lÃƒÂ½ hiÃ¡Â»Æ’n thÃ¡Â»â€¹
             local foundTabs = {}
             
             for section, elements in pairs(elementsInSection) do
                 local shouldShowSection = false
                 local hasElementMatch = false
                 
-                -- Kiểm tra section có khớp không
+                -- KiÃ¡Â»Æ’m tra section cÃƒÂ³ khÃ¡Â»â€ºp khÃƒÂ´ng
                 for _, elementInfo in ipairs(elements) do
                     if elementInfo.sectionFound then
                         shouldShowSection = true
@@ -931,15 +994,15 @@ function Library:CreateWindow(Setting)
                     end
                 end
                 
-                -- Logic hiển thị
+                -- Logic hiÃ¡Â»Æ’n thÃ¡Â»â€¹
                 for _, elementInfo in ipairs(elements) do
                     local control = elementInfo.control
                     
                     if elementInfo.elementFound then
-                        -- Phần tử khớp: hiển thị phần tử
+                        -- PhÃ¡ÂºÂ§n tÃ¡Â»Â­ khÃ¡Â»â€ºp: hiÃ¡Â»Æ’n thÃ¡Â»â€¹ phÃ¡ÂºÂ§n tÃ¡Â»Â­
                         control.Element.Visible = true
                         
-                        -- Nếu section cũng khớp hoặc có phần tử khớp: hiện section
+                        -- NÃ¡ÂºÂ¿u section cÃ…Â©ng khÃ¡Â»â€ºp hoÃ¡ÂºÂ·c cÃƒÂ³ phÃ¡ÂºÂ§n tÃ¡Â»Â­ khÃ¡Â»â€ºp: hiÃ¡Â»â€¡n section
                         if elementInfo.sectionFound or hasElementMatch then
                             control.Section.Visible = true
                         end
@@ -947,7 +1010,7 @@ function Library:CreateWindow(Setting)
                         foundTabs[control.TabName] = true
                         control.TabButton.Visible = true
                     elseif elementInfo.sectionFound and not hasElementMatch then
-                        -- Section khớp nhưng không có phần tử khớp: chỉ hiện section
+                        -- Section khÃ¡Â»â€ºp nhÃ†Â°ng khÃƒÂ´ng cÃƒÂ³ phÃ¡ÂºÂ§n tÃ¡Â»Â­ khÃ¡Â»â€ºp: chÃ¡Â»â€° hiÃ¡Â»â€¡n section
                         control.Section.Visible = true
                         control.Element.Visible = false
                         
@@ -957,7 +1020,7 @@ function Library:CreateWindow(Setting)
                 end
             end
             
-            -- Hiển thị các tab có kết quả
+            -- HiÃ¡Â»Æ’n thÃ¡Â»â€¹ cÃƒÂ¡c tab cÃƒÂ³ kÃ¡ÂºÂ¿t quÃ¡ÂºÂ£
             for tabName, _ in pairs(foundTabs) do
                 for _, tab in pairs(ControlList:GetChildren()) do
                     if not tab:IsA('UIListLayout') and string.find(tab.Name, tabName, 1, true) then
@@ -966,14 +1029,14 @@ function Library:CreateWindow(Setting)
                 end
             end
             
-            -- Nếu không tìm thấy gì cả, hiển thị thông báo
+            -- NÃ¡ÂºÂ¿u khÃƒÂ´ng tÃƒÂ¬m thÃ¡ÂºÂ¥y gÃƒÂ¬ cÃ¡ÂºÂ£, hiÃ¡Â»Æ’n thÃ¡Â»â€¹ thÃƒÂ´ng bÃƒÂ¡o
             if not next(foundTabs) then
-                -- Có thể thêm thông báo "Không tìm thấy kết quả" ở đây nếu muốn
+                -- CÃƒÂ³ thÃ¡Â»Æ’ thÃƒÂªm thÃƒÂ´ng bÃƒÂ¡o "KhÃƒÂ´ng tÃƒÂ¬m thÃ¡ÂºÂ¥y kÃ¡ÂºÂ¿t quÃ¡ÂºÂ£" Ã¡Â»Å¸ Ã„â€˜ÃƒÂ¢y nÃ¡ÂºÂ¿u muÃ¡Â»â€˜n
             end
         end
     end
     
-    -- Kết nối sự kiện search (giữ nguyên)
+    -- KÃ¡ÂºÂ¿t nÃ¡Â»â€˜i sÃ¡Â»Â± kiÃ¡Â»â€¡n search (giÃ¡Â»Â¯ nguyÃƒÂªn)
     SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
         GlobalSearch(SearchBox.Text)
     end)
@@ -1286,7 +1349,7 @@ function Library:CreateWindow(Setting)
 			
 			Section.Name = Section_Name .. "_Dot"
 			Section.Parent = PageList
-			Section.BackgroundColor3 = Color3.fromRGB(48, 48, 56)
+			Section.BackgroundColor3 = Color3.fromRGB(34, 16, 48)
 			Section.BackgroundTransparency = 0.25
 			-- Toggleable: collapsible (altura 30). Normal: AutomaticSize pra nao clipar toggles.
 			if Toggleable then
@@ -1299,13 +1362,13 @@ function Library:CreateWindow(Setting)
 			end
 
 			local sectionStroke = Instance.new("UIStroke", Section)
-			sectionStroke.Color = Color3.fromRGB(90, 45, 55)
+			sectionStroke.Color = Color3.fromRGB(120, 40, 110)
 			sectionStroke.Thickness = 1
 
 			local sectionGradient = Instance.new("UIGradient", Section)
 			sectionGradient.Color = ColorSequence.new{
-				ColorSequenceKeypoint.new(0, Color3.fromRGB(38, 38, 46)),
-				ColorSequenceKeypoint.new(1, Color3.fromRGB(48, 48, 56))
+				ColorSequenceKeypoint.new(0, Color3.fromRGB(24, 12, 34)),
+				ColorSequenceKeypoint.new(1, Color3.fromRGB(34, 16, 48))
 			}
 			sectionGradient.Rotation = 90
 			sectionGradient.Transparency = NumberSequence.new{
@@ -1504,7 +1567,7 @@ function Library:CreateWindow(Setting)
 				check.Name = "check"
 				check.Parent = checkbox
 				check.AnchorPoint = Vector2.new(0.5, 0.5)
-				check.BackgroundColor3 = Color3.fromRGB(255, 64, 96)
+				check.BackgroundColor3 = Color3.fromRGB(255, 45, 170)
 				check.Position = UDim2.new(0.5, 0, 0.5, 0)
 				local cac = 5
 				if Desc then
@@ -1666,20 +1729,20 @@ function Library:CreateWindow(Setting)
              ClickArea_1.Name = "ClickArea"
              ClickArea_1.Parent = RowBG_1
              ClickArea_1.AnchorPoint = Vector2.new(1, 0.5)
-             ClickArea_1.BackgroundColor3 = Color3.fromRGB(255, 64, 96)
+             ClickArea_1.BackgroundColor3 = Color3.fromRGB(255, 45, 170)
              ClickArea_1.Position = UDim2.new(1, -8,0.5, 0)
              ClickArea_1.Size = UDim2.new(0, 94,0, 30)
-             ClickArea_1.ClipsDescendants = true  -- THÊM DÒNG NÀY: Ngăn ripple tràn ra
+             ClickArea_1.ClipsDescendants = true  -- THÃƒÅ M DÃƒâ€™NG NÃƒâ‚¬Y: NgÃ„Æ’n ripple trÃƒÂ n ra
              
              UICorner_3.Parent = ClickArea_1
              UICorner_3.CornerRadius = UDim.new(0,12)
              
              UIGradient_1.Parent = ClickArea_1
              UIGradient_1.Color = ColorSequence.new{
-                 ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 110, 130)), 
-                 ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255, 64, 96)), 
-                 ColorSequenceKeypoint.new(0.6, Color3.fromRGB(220, 50, 75)), 
-                 ColorSequenceKeypoint.new(1, Color3.fromRGB(180, 35, 55))
+                 ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 220, 255)), 
+                 ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255, 45, 170)), 
+                 ColorSequenceKeypoint.new(0.6, Color3.fromRGB(190, 25, 130)), 
+                 ColorSequenceKeypoint.new(1, Color3.fromRGB(120, 20, 90))
              }
              UIGradient_1.Rotation = 90
              
@@ -1715,10 +1778,10 @@ function Library:CreateWindow(Setting)
              Button_1.TextColor3 = Color3.fromRGB(240, 240, 240)
              Button_1.TextSize = 13
 
-             -- UIScale mặc định
+             -- UIScale mÃ¡ÂºÂ·c Ã„â€˜Ã¡Â»â€¹nh
              UIScale_1.Scale = 1
              
-             -- HOVER (chỉ phóng to)
+             -- HOVER (chÃ¡Â»â€° phÃƒÂ³ng to)
              local scaleHover = TweenService:Create(UIScale_1, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { Scale = 1.05 })
              local scaleNormal = TweenService:Create(UIScale_1, TweenInfo.new(0.12, Enum.EasingStyle.Sine), { Scale = 1 })
              
@@ -1732,11 +1795,11 @@ function Library:CreateWindow(Setting)
              
                 Button_1.MouseButton1Down:Connect(function()
                     
-                    -- Lấy kích thước thực tế của ClickArea
+                    -- LÃ¡ÂºÂ¥y kÃƒÂ­ch thÃ†Â°Ã¡Â»â€ºc thÃ¡Â»Â±c tÃ¡ÂºÂ¿ cÃ¡Â»Â§a ClickArea
                     local w = ClickArea_1.AbsoluteSize.X
                     local h = ClickArea_1.AbsoluteSize.Y
                     
-                    -- Tạo ripple với hình dạng bo góc giống button (chữ nhật bo góc)
+                    -- TÃ¡ÂºÂ¡o ripple vÃ¡Â»â€ºi hÃƒÂ¬nh dÃ¡ÂºÂ¡ng bo gÃƒÂ³c giÃ¡Â»â€˜ng button (chÃ¡Â»Â¯ nhÃ¡ÂºÂ­t bo gÃƒÂ³c)
                     local ripple = Instance.new("Frame")
                     ripple.AnchorPoint = Vector2.new(0.5, 0.5)
                     ripple.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -1746,12 +1809,12 @@ function Library:CreateWindow(Setting)
                     ripple.ZIndex = 20
                     ripple.Parent = ClickArea_1
                     
-                    -- Tạo UICorner cho ripple với bo góc y hệt button
+                    -- TÃ¡ÂºÂ¡o UICorner cho ripple vÃ¡Â»â€ºi bo gÃƒÂ³c y hÃ¡Â»â€¡t button
                     local rippleCorner = Instance.new("UICorner")
-                    rippleCorner.CornerRadius = UICorner_3.CornerRadius -- Lấy góc bo từ button
+                    rippleCorner.CornerRadius = UICorner_3.CornerRadius -- LÃ¡ÂºÂ¥y gÃƒÂ³c bo tÃ¡Â»Â« button
                     rippleCorner.Parent = ripple
                     
-                    -- Animation ripple mở rộng từ tâm ra đầy đủ button
+                    -- Animation ripple mÃ¡Â»Å¸ rÃ¡Â»â„¢ng tÃ¡Â»Â« tÃƒÂ¢m ra Ã„â€˜Ã¡ÂºÂ§y Ã„â€˜Ã¡Â»Â§ button
                     local rippleTween = TweenService:Create(
                         ripple,
                         TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
@@ -1968,7 +2031,7 @@ function Library:CreateWindow(Setting)
                 ScrollContainerList.SortOrder = Enum.SortOrder.LayoutOrder
                 ScrollContainerList.Padding = UDim.new(0, 5)
                 
-                -- Tạo internal section để chứa các control
+                -- TÃ¡ÂºÂ¡o internal section Ã„â€˜Ã¡Â»Æ’ chÃ¡Â»Â©a cÃƒÂ¡c control
                 local InternalSection = Instance.new("Frame")
                 InternalSection.Name = "InternalSection"
                 InternalSection.Parent = ScrollContainer
@@ -2022,10 +2085,10 @@ function Library:CreateWindow(Setting)
                     end
                 end)
                 
-                -- Tạo dropdown section functions (CHỈ CÓ SLIDER)
+                -- TÃ¡ÂºÂ¡o dropdown section functions (CHÃ¡Â»Ë† CÃƒâ€œ SLIDER)
                 local dropdownSectionFunction = {}
                 
-                -- HÀM TẠO SLIDER (RỘNG HƠN, SÁT VIỀN)
+                -- HÃƒâ‚¬M TÃ¡ÂºÂ O SLIDER (RÃ¡Â»ËœNG HÃ†Â N, SÃƒÂT VIÃ¡Â»â‚¬N)
                 function dropdownSectionFunction:AddSlider(Setting)
                     local TitleText = tostring(Setting.Text or Setting.Title) or ""
                     local minValue = tonumber(Setting.Min) or 0
@@ -2053,7 +2116,7 @@ function Library:CreateWindow(Setting)
                     SliderFrame.Parent = InternalSection
                     SliderFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
                     SliderFrame.BackgroundTransparency = 1.000
-                    SliderFrame.Size = UDim2.new(1, 0, 0, 50)  -- Chiếm toàn bộ chiều rộng
+                    SliderFrame.Size = UDim2.new(1, 0, 0, 50)  -- ChiÃ¡ÂºÂ¿m toÃƒÂ n bÃ¡Â»â„¢ chiÃ¡Â»Âu rÃ¡Â»â„¢ng
                     
                     SliderCorner.CornerRadius = UDim.new(0, 4)
                     SliderCorner.Name = "SliderCorner"
@@ -2063,8 +2126,8 @@ function Library:CreateWindow(Setting)
                     SliderBG.Parent = SliderFrame
                     SliderBG.AnchorPoint = Vector2.new(0.5, 0.5)
                     SliderBG.Position = UDim2.new(0.5, 0, 0.5, 0)
-                    SliderBG.Size = UDim2.new(1, -5, 1, 0)  -- Chiếm gần toàn bộ (trừ 5 pixel)
-                    SliderBG.BackgroundColor3 = Color3.fromRGB(28, 28, 34)
+                    SliderBG.Size = UDim2.new(1, -5, 1, 0)  -- ChiÃ¡ÂºÂ¿m gÃ¡ÂºÂ§n toÃƒÂ n bÃ¡Â»â„¢ (trÃ¡Â»Â« 5 pixel)
+                    SliderBG.BackgroundColor3 = Color3.fromRGB(16, 8, 22)
                     SliderBG.BackgroundTransparency = 0.25
                     
                     SliderBGCorner.CornerRadius = UDim.new(0, 4)
@@ -2076,7 +2139,7 @@ function Library:CreateWindow(Setting)
                     SliderTitle.BackgroundColor3 = Color3.fromRGB(230, 230, 230)
                     SliderTitle.BackgroundTransparency = 1.000
                     SliderTitle.Position = UDim2.new(0, 10, 0, 0)
-                    SliderTitle.Size = UDim2.new(0.65, -10, 0, 25)  -- Title chiếm 65%
+                    SliderTitle.Size = UDim2.new(0.65, -10, 0, 25)  -- Title chiÃ¡ÂºÂ¿m 65%
                     SliderTitle.Font = Enum.Font.GothamBlack
                     SliderTitle.Text = TitleText
                     SliderTitle.TextSize = 14.000
@@ -2088,7 +2151,7 @@ function Library:CreateWindow(Setting)
                     SliderBar.Parent = SliderFrame
                     SliderBar.AnchorPoint = Vector2.new(0.5, 0.5)
                     SliderBar.Position = UDim2.new(0.5, 0, 0.5, 14)
-                    SliderBar.Size = UDim2.new(0.9, 0, 0, 6)  -- Thanh slider rộng 90%
+                    SliderBar.Size = UDim2.new(0.9, 0, 0, 6)  -- Thanh slider rÃ¡Â»â„¢ng 90%
                     SliderBar.BackgroundColor3 = getgenv().UIColor["Background 2 Color"]
                     
                     SliderButton.Name = "SliderButton"
@@ -2119,7 +2182,7 @@ function Library:CreateWindow(Setting)
                     Sliderboxframe.Parent = SliderFrame
                     Sliderboxframe.AnchorPoint = Vector2.new(1, 0)
                     Sliderboxframe.Position = UDim2.new(1, -10, 0, 5)
-                    Sliderboxframe.Size = UDim2.new(0.25, 0, 0, 25)  -- Textbox chiếm 25%
+                    Sliderboxframe.Size = UDim2.new(0.25, 0, 0, 25)  -- Textbox chiÃ¡ÂºÂ¿m 25%
                     Sliderboxframe.BackgroundColor3 = getgenv().UIColor["Background 2 Color"]
                     
                     Sliderbox.CornerRadius = UDim.new(0, 4)
@@ -2467,13 +2530,13 @@ function Library:CreateWindow(Setting)
 					end
 				end
 				local ListNew
-                local OrderedList = {} -- Thêm biến lưu thứ tự
+                local OrderedList = {} -- ThÃƒÂªm biÃ¡ÂºÂ¿n lÃ†Â°u thÃ¡Â»Â© tÃ¡Â»Â±
                 if Selected then
                     ListNew = {}
                     for _, value in ipairs(List) do
-                        -- Kiểm tra nếu value trùng với Default thì set true
+                        -- KiÃ¡Â»Æ’m tra nÃ¡ÂºÂ¿u value trÃƒÂ¹ng vÃ¡Â»â€ºi Default thÃƒÂ¬ set true
                         ListNew[value] = (value == Default)
-                        table.insert(OrderedList, value) -- Lưu thứ tự
+                        table.insert(OrderedList, value) -- LÃ†Â°u thÃ¡Â»Â© tÃ¡Â»Â±
                     end
                 else
                     ListNew = List
@@ -3084,10 +3147,10 @@ function Library:CreateWindow(Setting)
 						Dropdowntitle.Text = Title .. ': '
 					end
 				end
-				-- THÊM ĐOẠN NÀY
+				-- THÃƒÅ M Ã„ÂOÃ¡ÂºÂ N NÃƒâ‚¬Y
                 function dropdownFunction:SetValue(value)
                     if not Selected then
-                        -- Dropdown đơn lẻ (single)
+                        -- Dropdown Ã„â€˜Ã†Â¡n lÃ¡ÂºÂ» (single)
                         if table.find(ListNew, value) then
                             Sel.Value = value
                             if Search then
@@ -3137,8 +3200,8 @@ function Library:CreateWindow(Setting)
                     SectionName = Section_Name,
                     TabName = Page_Name,
                     TabButton = PageName,
-                    SetValue = dropdownFunction.SetValue,  -- THÊM DÒNG NÀY
-                    GetValue = dropdownFunction.GetValue   -- THÊM DÒNG NÀY
+                    SetValue = dropdownFunction.SetValue,  -- THÃƒÅ M DÃƒâ€™NG NÃƒâ‚¬Y
+                    GetValue = dropdownFunction.GetValue   -- THÃƒÅ M DÃƒâ€™NG NÃƒâ‚¬Y
                 }
                 table.insert(getgenv().AllControls, controlData)
                 
@@ -3148,7 +3211,7 @@ function Library:CreateWindow(Setting)
 function sectionFunction:AddKeyBind(Setting, Callback)
     local TitleText = tostring(Setting.Title or Setting.Text) or ""
     local Default = Setting.Default or Setting.Key or "F"
-    local Mode = Setting.Mode or "Toggle" -- Hold hoặc Toggle
+    local Mode = Setting.Mode or "Toggle" -- Hold hoÃ¡ÂºÂ·c Toggle
     local Callback = Setting.Callback or Callback or function() end
     
     local function GetKeyString(key)
@@ -3164,7 +3227,7 @@ function sectionFunction:AddKeyBind(Setting, Callback)
     local ToggleState = false
     local HoldActive = false
     
-    -- UI Elements (BỎ ModeButton)
+    -- UI Elements (BÃ¡Â»Å½ ModeButton)
     local BindFrame = Instance.new("Frame")
     local BindCorner = Instance.new("UICorner")
     local BindBG = Instance.new("Frame")
