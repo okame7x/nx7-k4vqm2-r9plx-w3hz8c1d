@@ -22,7 +22,8 @@ local function destroyMarked(parent)
 	for _, v in ipairs(parent:GetChildren()) do
 		if v:GetAttribute(ATTR) == true
 			or (typeof(v.Name) == "string" and (
-				string.find(v.Name, "Ghost Pipper", 1, true)
+				string.find(v.Name, "Ghost Pepper", 1, true)
+				or string.find(v.Name, "Ghost Pipper", 1, true) -- limpa instancias antigas tambem
 				or string.find(v.Name, "Nousigi Hub", 1, true)
 				or string.find(v.Name, "CHTest_", 1, true)
 			)) then
@@ -130,7 +131,7 @@ local T1UIColor = {
 	["Title Text Color"] = ACCENT,
 	["Background Main Color"] = BG0,
 	["Background 1 Color"] = BG1,
-	["Background 1 Transparency"] = 0.12,
+	["Background 1 Transparency"] = 0,
 	["Background 2 Color"] = BG2,
 	["Background 3 Color"] = BG3,
 	["Background Image"] = "",
@@ -231,7 +232,7 @@ local function prepScreenGui(gui, name, order)
 	return gui
 end
 
-Library_Function.Gui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper", 2147483645)
+Library_Function.Gui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pepper Hub", 2147483645)
 Library_Function.Gui.Enabled = false
 
 getgenv().ReadyForGuiLoaded = false
@@ -244,8 +245,8 @@ task.spawn(function()
 	end
 end)
 
-Library_Function.NotiGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Noti", 2147483646)
-Library_Function.HideGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pipper Btn", 2147483647)
+Library_Function.NotiGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pepper Notifications", 2147483646)
+Library_Function.HideGui = prepScreenGui(Instance.new("ScreenGui"), "Ghost Pepper Toggle", 2147483647)
 
 
 local BTN_SIZE = 48
@@ -473,7 +474,7 @@ local libCreateNoti = function(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-    TextLabelNoti.Text = "<font color=\"rgb(" .. tostring(color or "255,20,180") .. ")\">" .. tostring("Ghost Pipper Hub") .. "</font> " .. tostring(getgenv().TitleNameNoti or "")
+    TextLabelNoti.Text = "<font color=\"rgb(" .. tostring(color or "255,20,180") .. ")\">" .. tostring("Ghost Pepper Hub") .. "</font> " .. tostring(getgenv().TitleNameNoti or "")
     
 	TextLabelNoti.Name = "TextLabelNoti"
 	TextLabelNoti.Parent = Topnoti
@@ -580,7 +581,7 @@ function Library:Notify(Setting, bypass)
 end
 
 function Library:CreateWindow(Setting)
-    local TitleNameMain = Setting.Title or "Ghost Pipper Hub"
+    local TitleNameMain = Setting.Title or "Ghost Pepper Hub"
     getgenv().MainDesc = Setting.Desc or Setting.Subtitle or ""
     
     if Setting.Image then
@@ -610,7 +611,7 @@ function Library:CreateWindow(Setting)
 	Main.Name = "Main"
 	Main.Parent = Library_Function.Gui
 	Main.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-	Main.BackgroundTransparency = 1.000
+	Main.BackgroundTransparency = 0
 	Main.Position = UDim2.new(0.5, 0, 0.5, 0)
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
 	Main.Size = UDim2.new(0, 629, 0, 359)
@@ -638,7 +639,7 @@ function Library:CreateWindow(Setting)
 	MainContainer.Name = "MainContainer"
 	MainContainer.Parent = Main
 	MainContainer.BackgroundColor3 = BG0
-	MainContainer.BackgroundTransparency = 0.12
+	MainContainer.BackgroundTransparency = 0
 	MainContainer.Size = UDim2.new(1, 0, 1, 0)
 	MainContainer.Image = ""
 	MainContainer.ClipsDescendants = true
@@ -648,12 +649,13 @@ function Library:CreateWindow(Setting)
 	uistr.Color = ACCENT;
 	uistr.Transparency = 0.25
 
-	-- area transparente: glow neon magenta Ã¢â€ â€™ cyan + watermark da logo
+	-- Fundo solido: sem efeito de transparencia para leitura melhor no jogo.
 	local glowFill = Instance.new("Frame")
 	glowFill.Name = "NeonGlow"
-	glowFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	glowFill.BackgroundColor3 = BG1
 	glowFill.BorderSizePixel = 0
 	glowFill.Size = UDim2.new(1, 0, 1, 0)
+	glowFill.Visible = false
 	glowFill.ZIndex = 0
 	glowFill.Parent = MainContainer
 
@@ -675,7 +677,7 @@ function Library:CreateWindow(Setting)
 	watermark.Name = "LogoWatermark"
 	watermark.BackgroundTransparency = 1
 	watermark.Image = getgenv().UIColor["Logo Image"]
-	watermark.ImageTransparency = 0.78
+	watermark.ImageTransparency = 1
 	watermark.ImageColor3 = ACCENT
 	watermark.ScaleType = Enum.ScaleType.Fit
 	watermark.AnchorPoint = Vector2.new(1, 1)
@@ -691,8 +693,8 @@ function Library:CreateWindow(Setting)
 	}
 	uigradient.Rotation = 90
 	uigradient.Transparency = NumberSequence.new{
-		NumberSequenceKeypoint.new(0, 0.9),
-		NumberSequenceKeypoint.new(1, 0.94)
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(1, 0)
 	}
 
 	getgenv().ReadyForGuiLoaded = true
@@ -769,7 +771,7 @@ function Library:CreateWindow(Setting)
 	PageControl.Position = UDim2.new(0, 5, 0, 0)
 	PageControl.Size = UDim2.new(0, 180, 0, 325)
 	PageControl.BackgroundColor3 = BG1
-	PageControl.BackgroundTransparency = 0.12
+	PageControl.BackgroundTransparency = 0
 
 	local pageControlStroke = Instance.new("UIStroke", PageControl)
 	pageControlStroke.Color = ACCENT
@@ -782,8 +784,8 @@ function Library:CreateWindow(Setting)
 	}
 	pageControlGradient.Rotation = 90
 	pageControlGradient.Transparency = NumberSequence.new{
-		NumberSequenceKeypoint.new(0, 0.06),
-		NumberSequenceKeypoint.new(1, 0.12)
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(1, 0)
 	}
 
 	UICorner.CornerRadius = UDim.new(0, 4)
@@ -1341,7 +1343,7 @@ function Library:CreateWindow(Setting)
 			Section.Name = Section_Name .. "_Dot"
 			Section.Parent = PageList
 			Section.BackgroundColor3 = BG3
-			Section.BackgroundTransparency = 0.18
+			Section.BackgroundTransparency = 0
 			-- Toggleable: collapsible (altura 30). Normal: AutomaticSize pra nao clipar toggles.
 			if Toggleable then
 				Section.Size = UDim2.new(1, -5, 0, 30)
@@ -1363,8 +1365,8 @@ function Library:CreateWindow(Setting)
 			}
 			sectionGradient.Rotation = 90
 			sectionGradient.Transparency = NumberSequence.new{
-				NumberSequenceKeypoint.new(0, 0.05),
-				NumberSequenceKeypoint.new(1, 0.15)
+				NumberSequenceKeypoint.new(0, 0),
+				NumberSequenceKeypoint.new(1, 0)
 			}
 
 			UICorner.CornerRadius = UDim.new(0, 4)
@@ -3746,5 +3748,52 @@ end
 end
 
 getgenv().NousigiLibrary = Library
--- Sem auto-window: quem carrega (script.lua) chama CreateWindow e monta as tabs.
+
+-- Janela provisoria para conferir o visual. Troque para false quando a UI for
+-- ligada aos controles reais do hub.
+local TEST_UI = true
+if TEST_UI then
+	local testWindow = Library:CreateWindow({
+		Title = "GHOST PEPPER HUB",
+	})
+
+	local replication = testWindow:AddTab("Replication")
+	local controls = replication:AddSection("Test Controls")
+	controls:AddToggle(nil, {
+		Title = "Enable Replication",
+		Desc = "Ativa a replicacao para teste visual.",
+		Default = true,
+		Callback = function(value) print("Enable Replication:", value) end,
+	})
+	controls:AddToggle(nil, {
+		Title = "CFrame Carry Test",
+		Desc = "Controle de exemplo para o hub.",
+		Default = false,
+		Callback = function(value) print("CFrame Carry Test:", value) end,
+	})
+	controls:AddSlider({
+		Title = "Clone Delay",
+		Min = 0,
+		Max = 2,
+		Default = 0.3,
+		Precise = true,
+		Callback = function(value) print("Clone Delay:", value) end,
+	})
+
+	local visuals = testWindow:AddTab("Visuals")
+	local visualControls = visuals:AddSection("Visual Settings")
+	visualControls:AddDropdown(nil, {
+		Title = "Highlight Style",
+		Values = { "Crimson", "Pulse", "Outline" },
+		Default = "Crimson",
+		Callback = function(value) print("Highlight Style:", value) end,
+	})
+	visualControls:AddButton({
+		Title = "Show Notification",
+		Callback = function()
+			Library:Notify({ Title = "Ready", Description = "Ghost Pepper UI carregada.", Duration = 3 })
+		end,
+	})
+end
+
 return Library
